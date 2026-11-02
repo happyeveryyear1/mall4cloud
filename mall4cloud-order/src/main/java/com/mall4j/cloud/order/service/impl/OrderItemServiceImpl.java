@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,7 +54,17 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Override
     public List<String> getSpuNameListByOrderIds(long[] orderIdList) {
-        return orderItemMapper.getSpuNameListByOrderIds(orderIdList);
+        if (orderIdList == null || orderIdList.length == 0) {
+            return Collections.emptyList();
+        }
+        long[] normalizedOrderIds = Arrays.stream(orderIdList)
+                .filter(orderId -> orderId > 0)
+                .distinct()
+                .toArray();
+        if (normalizedOrderIds.length == 0) {
+            return Collections.emptyList();
+        }
+        return orderItemMapper.getSpuNameListByOrderIds(normalizedOrderIds);
     }
 
     @Override

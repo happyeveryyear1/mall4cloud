@@ -49,7 +49,7 @@ public interface PayInfoService {
      * 查询订单是否已经支付
      * @param orderIds 订单id
      * @param userId 用户id
-     * @return 是否已经支付
+     * @return 1 表示存在已支付记录，0 表示未支付或查询参数为空
      */
     Integer isPay(String orderIds, Long userId);
 }

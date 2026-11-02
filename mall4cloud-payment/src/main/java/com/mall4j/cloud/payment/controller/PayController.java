@@ -54,7 +54,6 @@ public class PayController {
     @Operation(summary = "根据订单号查询该订单是否已经支付" , description = "根据订单号查询该订单是否已经支付")
     public ResponseEntity<Boolean> isPay(@PathVariable String orderIds) {
         Long userId = AuthUserContext.get().getUserId();
-        payInfoService.getPayStatusByOrderIds(orderIds);
         Integer isPay = payInfoService.isPay(orderIds, userId);
         return ResponseEntity.ok(BooleanUtil.isTrue(isPay));
     }

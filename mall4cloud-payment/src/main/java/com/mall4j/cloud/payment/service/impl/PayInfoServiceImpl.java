@@ -115,6 +115,10 @@ public class PayInfoServiceImpl implements PayInfoService {
 
     @Override
     public Integer isPay(String orderIds, Long userId) {
-        return payInfoMapper.isPay(orderIds, userId);
+        if (StrUtil.isBlank(orderIds) || userId == null || userId <= 0) {
+            return 0;
+        }
+        Integer paidCount = payInfoMapper.isPay(orderIds.trim(), userId);
+        return paidCount != null && paidCount > 0 ? 1 : 0;
     }
 }
