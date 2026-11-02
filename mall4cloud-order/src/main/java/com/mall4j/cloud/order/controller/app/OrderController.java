@@ -117,7 +117,8 @@ public class OrderController {
     @Parameter(name = "orderIds", description = "订单流水号" , required = true)
     public ServerResponseEntity<SubmitOrderPayInfoVO> getOrderPayInfoByOrderNumber(@RequestParam("orderIds") String orderIds) {
         long[] orderIdList = StrUtil.splitToLong(orderIds, ",");
-        List<String> spuNameList = orderItemService.getSpuNameListByOrderIds(orderIdList);
+        List<String> spuNameList = orderItemService.getSpuNameListByOrderIds(
+                Arrays.stream(orderIdList).boxed().toList());
         //获取订单信息
         SubmitOrderPayAmountInfoBO submitOrderPayAmountInfo = orderService.getSubmitOrderPayAmountInfo(orderIdList);
         if (Objects.isNull(submitOrderPayAmountInfo) || Objects.isNull(submitOrderPayAmountInfo.getCreateTime()) ) {

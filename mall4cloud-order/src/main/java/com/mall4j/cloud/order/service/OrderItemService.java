@@ -52,10 +52,10 @@ public interface OrderItemService {
 	/**
 	 * 根据订单id获取商品名称
 	 *
-	 * @param orderIdList 订单id
+	 * @param orderIds 订单id列表，忽略空值、非正数和重复id
 	 * @return 商品名称列表
 	 */
-    List<String> getSpuNameListByOrderIds(long[] orderIdList);
+    List<String> getSpuNameListByOrderIds(List<Long> orderIds);
 
 	/**
 	 * 根据订单id获取订单项数量

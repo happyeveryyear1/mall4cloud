@@ -4,6 +4,7 @@ import com.mall4j.cloud.api.auth.bo.UserInfoInTokenBO;
 import com.mall4j.cloud.common.security.AuthUserContext;
 import com.mall4j.cloud.payment.controller.PayController;
 import com.mall4j.cloud.payment.mapper.PayInfoMapper;
+import com.mall4j.cloud.payment.service.PayInfoService;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -15,35 +16,41 @@ import static org.junit.Assert.*;
 public class PayInfoServiceImplTest {
 
     @Test
+    public void booleanQueryReportsMultiplePaidRowsForTheAuthenticatedUser() throws Exception {
+        PayInfoService service = serviceWithCount(2);
+        assertTrue(service.isPay(41L, " 7,8 "));
+    }
+
+    @Test
     public void invalidPaymentLookupsAreUnpaidWithoutQuerying() throws Exception {
         PayInfoServiceImpl service = service((proxy, method, args) -> {
             throw new AssertionError("Invalid payment lookup must not reach SQL: " + method.getName());
         });
-        assertEquals(Integer.valueOf(0), service.isPay(null, 41L));
-        assertEquals(Integer.valueOf(0), service.isPay(" \t ", 41L));
-        assertEquals(Integer.valueOf(0), service.isPay("7,8", null));
-        assertEquals(Integer.valueOf(0), service.isPay("7,8", 0L));
-        assertEquals(Integer.valueOf(0), service.isPay("7,8", -1L));
+        assertFalse(service.isPay(41L, null));
+        assertFalse(service.isPay(41L, " \t "));
+        assertFalse(service.isPay(null, "7,8"));
+        assertFalse(service.isPay(0L, "7,8"));
+        assertFalse(service.isPay(-1L, "7,8"));
     }
 
     @Test
     public void missingPaymentCountIsUnpaid() throws Exception {
-        assertEquals(Integer.valueOf(0), serviceWithCount(null).isPay("7,8", 41L));
+        assertFalse(serviceWithCount(null).isPay(41L, "7,8"));
     }
 
     @Test
     public void zeroPaymentsAreUnpaid() throws Exception {
-        assertEquals(Integer.valueOf(0), serviceWithCount(0).isPay("7,8", 41L));
+        assertFalse(serviceWithCount(0).isPay(41L, "7,8"));
     }
 
     @Test
     public void multiplePaidRowsStillMeanPaid() throws Exception {
-        assertEquals(Integer.valueOf(1), serviceWithCount(2).isPay("7,8", 41L));
+        assertTrue(serviceWithCount(2).isPay(41L, "7,8"));
     }
 
     @Test
     public void trimsOuterWhitespaceBeforeLookingUpTheAuthenticatedUser() throws Exception {
-        assertEquals(Integer.valueOf(1), serviceWithCount(1).isPay(" 7,8 \t", 41L));
+        assertTrue(serviceWithCount(1).isPay(41L, " 7,8 \t"));
     }
 
     @Test

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 订单项
@@ -53,11 +53,13 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public List<String> getSpuNameListByOrderIds(long[] orderIdList) {
-        if (orderIdList == null || orderIdList.length == 0) {
+    public List<String> getSpuNameListByOrderIds(List<Long> orderIds) {
+        if (orderIds == null || orderIds.isEmpty()) {
             return Collections.emptyList();
         }
-        long[] normalizedOrderIds = Arrays.stream(orderIdList)
+        long[] normalizedOrderIds = orderIds.stream()
+                .filter(Objects::nonNull)
+                .mapToLong(Long::longValue)
                 .filter(orderId -> orderId > 0)
                 .distinct()
                 .toArray();

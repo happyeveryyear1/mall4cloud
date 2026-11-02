@@ -27,10 +27,10 @@ Spec: User request in this chat, 2026-11-02.
 
 ## Tasks
 - [x] Add meaningful v2 regression tests and observe both modules failing for the intended reasons.
-- [ ] Implement v2 method bodies, run the complete reactor clean verify, review the diff and commit/push.
-- [ ] Archive v2 executable JARs with commit/hash records and start new-path Nexus uploads.
-- [ ] Add failing v3 collection/signature behavior tests, implement/migrate interfaces and callers.
-- [ ] Run the complete reactor clean verify, review the diff and commit/push v3.
+- [x] Implement v2 method bodies, run the complete reactor clean verify, review the diff and commit/push.
+- [x] Archive v2 executable JARs with commit/hash records and start new-path Nexus uploads.
+- [x] Add failing v3 collection/signature behavior tests, implement/migrate interfaces and callers.
+- [x] Run the complete reactor clean verify, review the diff and commit/push v3.
 - [ ] Archive/upload v3 JARs and verify all four Nexus sizes, SHA-256 values, generated POMs and Browse directories.
 - [ ] Deliver commit links, exact method differences, test/build results and per-version download URLs.
 

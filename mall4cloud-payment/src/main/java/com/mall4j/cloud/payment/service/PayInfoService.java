@@ -47,9 +47,9 @@ public interface PayInfoService {
 
     /**
      * 查询订单是否已经支付
-     * @param orderIds 订单id
      * @param userId 用户id
-     * @return 1 表示存在已支付记录，0 表示未支付或查询参数为空
+     * @param orderIds 订单id
+     * @return 是否存在属于当前用户的已支付记录，参数为空时返回false
      */
-    Integer isPay(String orderIds, Long userId);
+    boolean isPay(Long userId, String orderIds);
 }

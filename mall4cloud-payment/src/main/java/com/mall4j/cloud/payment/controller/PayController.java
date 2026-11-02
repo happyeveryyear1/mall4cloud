@@ -4,7 +4,6 @@ package com.mall4j.cloud.payment.controller;
 import com.mall4j.cloud.api.auth.bo.UserInfoInTokenBO;
 import com.mall4j.cloud.common.response.ServerResponseEntity;
 import com.mall4j.cloud.common.security.AuthUserContext;
-import com.mall4j.cloud.common.util.BooleanUtil;
 import com.mall4j.cloud.payment.bo.PayInfoBO;
 import com.mall4j.cloud.payment.dto.PayInfoDTO;
 import com.mall4j.cloud.payment.service.PayInfoService;
@@ -54,7 +53,6 @@ public class PayController {
     @Operation(summary = "根据订单号查询该订单是否已经支付" , description = "根据订单号查询该订单是否已经支付")
     public ResponseEntity<Boolean> isPay(@PathVariable String orderIds) {
         Long userId = AuthUserContext.get().getUserId();
-        Integer isPay = payInfoService.isPay(orderIds, userId);
-        return ResponseEntity.ok(BooleanUtil.isTrue(isPay));
+        return ResponseEntity.ok(payInfoService.isPay(userId, orderIds));
     }
 }
